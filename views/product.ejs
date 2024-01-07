@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+  
+<link rel="stylesheet" href="https://cdn.rtlcss.com/bootstrap/v4.5.3/css/bootstrap.min.css" integrity="sha384-JvExCACAZcHNJEc7156QaHXTnQL3hQBixvj5RV5buE7vgnNEzzskDtx9NQ4p6BJe" crossorigin="anonymous">
+<script src="https://cdn.rtlcss.com/bootstrap/v4.5.3/js/bootstrap.bundle.min.js" integrity="sha384-40ix5a3dj6/qaC7tfz0Yr+p9fqWLzzAXiwxVLt9dw7UjQzGYw6rWRhFAnRapuQyK" crossorigin="anonymous"></script>    
+<!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script> -->
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+<script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
+</head>
+<style>
+    body {
+    margin: 0;
+    font-family: Roboto,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+    font-size: .8125rem;
+    font-weight: 400;
+    line-height: 1.5385;
+    color: #333;
+    text-align: left;
+    background-color: #f5f5f5;
+}
+
+.mt-50{
+    margin-top: 50px;
+}
+.mb-50{
+    margin-bottom: 50px;
+}
+
+
+.bg-teal-400 { 
+    background-color: #26a69a;
+}
+
+a{
+    text-decoration: none !important;
+}
+
+
+.fa {
+        color: red;
+}
+
+.media-body {
+    text-align: start;
+}
+
+</style>
+<body>
+    <div class="container d-flex justify-content-center mt-50 mb-50">
+            
+        <div class="row">
+           <div class="col-md-10">
+            
+                <div class="card card-body">
+                    <% products.forEach(function(product){%> 
+                            <div class="media align-items-center align-items-lg-start text-center text-lg-left flex-column flex-lg-row">
+                                <div class="mr-2 mb-3 mb-lg-0">
+                                    
+                                        <img src="https://i.imgur.com/5Aqgz7o.jpg" width="150" height="150" alt="">
+                                   
+                                </div>
+
+                                <div class="media-body">
+                                    <h6 class="media-title font-weight-semibold">
+                                        <a href="#" data-abc="true"><%= product.book_name %></a>
+                                    </h6>
+
+                                    <ul class="list-inline list-inline-dotted mb-3 mb-lg-2">
+                                        <li class="list-inline-item"><a href="#" class="text-muted" data-abc="true"><%=product.auther_name %></a></li>
+                                    </ul>
+
+                                    <p class="mb-3"><%=product.description %></p>
+
+                                   
+                                </div>
+
+                                <div class="mt-3 mt-lg-0 ml-lg-3 text-center">
+                                    <h3 class="mb-0 font-weight-semibold">₹<%=product.price %></h3>
+
+                                    <button type="button" class="btn btn-warning mt-4 text-white"><i class="icon-cart-add mr-2"></i> Add to cart</button>
+                                    <a class="p-blue-btn add_to_cart w-75"
+                                        data-book_name="<%- product.book_name%>"
+                                        data-auther_name="<%- product.auther_name%>"
+                                        data-price="<%- product.price %>"
+                                        data-description="<%- product.description %>"
+                                        data-qty="1" data-type="add-to-cart">Add To Bag</a>
+                                </div>
+                            </div>
+                     <%})%>
+                        </div>
+        </div>                     
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function(){
+            $(".add_to_cart").click(function () {
+            debugger
+            var thisProduct = $(this);
+            var BookName = (thisProduct.data('book_name'));
+            var AutherName = (thisProduct.data('auther_name'));
+            var Description = (thisProduct.data('description'));
+            var Price = parseFloat(thisProduct.data('price'));
+            var Quantity = (thisProduct.data('qty'));
+        
+        $.ajax({
+            async: false,
+            method: 'post',
+            url: '/addtocart',
+            data: {
+                BookName: BookName,
+                AutherName: AutherName,
+                Description: Description,
+                Price: Price,
+                Quantity: Quantity
+            },
+            success: function(data){
+                window.location.href = '/cart_page'
+            },
+            error: function () {
+                console.log('error');
+            }
+        })
+    })
+})
+    </script>
+    </body>
+</html>
